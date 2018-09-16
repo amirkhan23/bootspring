@@ -29,6 +29,7 @@ public class UserImpl implements UserApi {
 	@Override
 	public List<User> getAllUsers() {
 
+		@SuppressWarnings("unchecked")
 		List<User> list = entityManager.createQuery("from User").getResultList();
 
 		return list;

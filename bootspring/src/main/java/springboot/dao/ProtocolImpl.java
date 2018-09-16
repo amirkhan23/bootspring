@@ -25,7 +25,7 @@ public class ProtocolImpl implements ProtocolApi{
 
 	@Override
 	public Protocol getDive(Protocol device) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

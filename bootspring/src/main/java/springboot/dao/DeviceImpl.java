@@ -28,12 +28,13 @@ public class DeviceImpl implements DeviceApi {
 
 	@Override
 	public Device getDive(Device device) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List<Device> getAllDevices() {
+		@SuppressWarnings("unchecked")
 		List<Device> list = entityManager.createQuery("from Device").getResultList();
 		return list;
 	}
