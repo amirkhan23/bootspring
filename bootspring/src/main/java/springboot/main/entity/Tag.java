@@ -1,4 +1,4 @@
-package springboot.model;
+package springboot.main.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,13 +28,18 @@ public class Tag implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tag_id")
-	private int tag_id;
+	private Integer tag_id;
 
 	@Column(name = "description", nullable = false)
 	private String description;
 
+	enum Is_active {
+		Y, N
+	};
+
 	@Column(name = "Is_active", nullable = false)
-	private String is_active;
+	@Enumerated(EnumType.STRING)
+	private Is_active is_active;
 
 	@Column(name = "created_On", nullable = false)
 	private Date created_On;
@@ -53,11 +60,11 @@ public class Tag implements Serializable {
 		this.description = description;
 	}
 
-	public String getIs_active() {
+	public Is_active getIs_active() {
 		return is_active;
 	}
 
-	public void setIs_active(String is_active) {
+	public void setIs_active(Is_active is_active) {
 		this.is_active = is_active;
 	}
 

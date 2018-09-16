@@ -1,6 +1,7 @@
-package springboot.model;
+package springboot.main.entity;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -22,7 +24,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="User_id")
-	private int user_id;
+	private Integer user_id;
 	
 	@Column(name="User_name",nullable=false)
 	private String user_name;
@@ -32,7 +34,8 @@ public class User {
 	private String email;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
-	private Collection<Device> device;
+	@JoinColumn(name="device_id")
+	private Set<Device> device = new HashSet<>();
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Tag tag_id;
@@ -61,11 +64,11 @@ public class User {
 		this.email = email;
 	}
 
-	public Collection<Device> getDevice() {
+	public Set<Device> getDevice() {
 		return device;
 	}
 
-	public void setDevice(Collection<Device> device) {
+	public void setDevice(Set<Device> device) {
 		this.device = device;
 	}
 

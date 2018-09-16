@@ -1,55 +1,53 @@
-package springboot.model;
+package springboot.main.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "Protocol")
-@JsonIgnoreProperties(value = { "created_On", "effectivity_date" }, allowGetters = true)
 public class Protocol implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Protocol_id")
-	private int protocol_Id;
+	@Column(name = "PROTOCOL_ID")
+	private Integer protocol_Id;
 
-	@Column(name = "Title")
+	@Column(name = "TITLE", unique = true)
 	@Size(max = 200, message = "length is not greater than 200")
 	@NotNull
 	private String title;
 
-	@Column(name = "Created_on")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATED_ON")
 	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_On;
 
-	@Column(name = "Effectivity_date")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "EFFECTIVITY_DATE")
 	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date effectivity_date;
 
 	public Protocol() {
 		super();
-		
+
+	}
+
+	public Protocol(String title, Date created_On, Date effectivity_date) {
+		super();
+		this.title = title;
+		this.created_On = created_On;
+		this.effectivity_date = effectivity_date;
 	}
 
 	public int getProtocol_Id() {

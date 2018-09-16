@@ -1,4 +1,4 @@
-package springboot.controllers;
+package springboot.main.controllers;
 
 import java.util.Date;
 import java.util.List;
@@ -6,41 +6,24 @@ import java.util.List;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import springboot.dao.DeviceImpl;
-import springboot.dao.ProtocolImpl;
-import springboot.dao.TagImpl;
-import springboot.dao.UserImpl;
-import springboot.model.Device;
-import springboot.model.Protocol;
-import springboot.model.Tag;
-import springboot.model.User;
+
+import springboot.main.entity.Device;
+import springboot.main.entity.Protocol;
+import springboot.main.entity.Tag;
+import springboot.main.entity.User;
 
 @RestController
-@ComponentScan({ "springboot.dao" })
 public class MainController {
 
-	@Autowired
-	DeviceImpl d;
-	@Autowired
-	ProtocolImpl p;
-	@Autowired
-	TagImpl t;
-	@Autowired
-	UserImpl u;
+	
 
-	@RequestMapping("/")
-	public String getIndex() {
 
-		return "index";
-	}
-
-	@RequestMapping(value = "/bootspring/device", method = RequestMethod.POST, consumes = "application/json")
+	/*@RequestMapping(value = "/bootspring/device", method = RequestMethod.POST, consumes = "application/json")
 	public String getJsondevice(@RequestBody Device device) {
 
 		Protocol pro = new Protocol();
@@ -49,7 +32,7 @@ public class MainController {
 		pro.setEffectivity_date(new Date());
 		device.setProtcol_id(pro);
 
-		p.save(pro);
+		//p.save(pro);
 
 		boolean d1 = d.save(device);
 		System.out.println(d1 + "  " + device);
@@ -103,5 +86,5 @@ public class MainController {
 		List<User> getAllUser = u.getAllUsers();
 		return getAllUser;
 	}
-
+*/
 }
