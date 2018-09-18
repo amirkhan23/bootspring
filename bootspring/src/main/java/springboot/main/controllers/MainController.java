@@ -1,90 +1,87 @@
 package springboot.main.controllers;
 
-import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
-import org.apache.sling.commons.json.JSONException;
-import org.apache.sling.commons.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import springboot.main.dao.DeviceRepo;
+import springboot.main.dao.ProtocolRepo;
+import springboot.main.dao.TagRepo;
 import springboot.main.entity.Device;
 import springboot.main.entity.Protocol;
 import springboot.main.entity.Tag;
-import springboot.main.entity.User;
+import springboot.main.services.DateFormatter;
 
 @RestController
 public class MainController {
 
-	
+	@Autowired
+	ProtocolRepo protocolRepo;
 
+	@Autowired
+	TagRepo tagRepo;
 
-	/*@RequestMapping(value = "/bootspring/device", method = RequestMethod.POST, consumes = "application/json")
-	public String getJsondevice(@RequestBody Device device) {
+	@Autowired
+	DeviceRepo deviceRepo;
 
-		Protocol pro = new Protocol();
-		pro.setTitle("p" + Math.random());
-		pro.setCreated_On(new Date());
-		pro.setEffectivity_date(new Date());
-		device.setProtcol_id(pro);
+	@Autowired
+	DateFormatter df;
 
-		//p.save(pro);
+	/*
+	 * 
+	 * add tag in database
+	 * 
+	 */
+	@RequestMapping(value = "/addTag", method = RequestMethod.POST)
+	public ResponseEntity<Tag> addTag(@RequestBody Tag tag) {
 
-		boolean d1 = d.save(device);
-		System.out.println(d1 + "  " + device);
-		JSONObject json = new JSONObject();
-		try {
-			json.put("Device_id", device.getDevice_Id());
-			json.put("operator_id", device.getOperator_id());
-			json.put("status", device.getStatus());
-			json.put("description", device.getDescription());
-			json.put("pfrotocol_id", device.getProtcol_id());
-		} catch (JSONException e) {
+		return new ResponseEntity<>(tagRepo.save(tag), HttpStatus.CREATED);
+	}
 
-			e.printStackTrace();
+	/*
+	 * 
+	 * add device in database
+	 * 
+	 */
+	@RequestMapping(value = "/addDevice", method = RequestMethod.POST)
+	public ResponseEntity<Device> addDevice(@RequestBody Device device) {
+
+		return new ResponseEntity<>(deviceRepo.save(device), HttpStatus.CREATED);
+	}
+
+	/*
+	 * 
+	 * add protocol in database
+	 * 
+	 */
+	// http://localhost:8080/addProtocol?device_id=1
+	// hit url like this
+
+	@RequestMapping(value = "/addProtocol", method = RequestMethod.POST)
+	public ResponseEntity<Protocol> addProtocol(@RequestBody Protocol protocol,
+			@RequestParam Map<String, String> device_id) {
+		
+		// check device in exists or not		
+		boolean chk = deviceRepo.exists(Integer.parseInt(device_id.get("device_id").trim()));
+		
+		System.out.println(chk);
+		if (!chk) {
+			return new ResponseEntity<>(protocol, HttpStatus.NOT_FOUND);
 		}
-		return json.toString();
-
+		
+		// if device in exists fetch details of device
+		Device device = deviceRepo.findOne(Integer.parseInt(device_id.get("device_id").trim()));
+		
+		// set device in protocol
+		protocol.setDevice(device);
+		return new ResponseEntity<>(protocolRepo.save(protocol), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/bootspring/user", method = RequestMethod.POST, consumes = "application/json")
-	public String getUser(@RequestBody User user) {
-
-		Tag tag = new Tag();
-		tag.setCreated_On(new Date());
-		tag.setIs_active("Y");
-		tag.setDescription("Its a Tag ");
-		t.save(tag);
-
-		user.setTag_id(tag);
-
-		user.setDevice(d.getAllDevices());
-		boolean d1 = u.save(user);
-
-		System.out.println(d1 + "  " + user);
-		JSONObject json = new JSONObject();
-		try {
-			json.put("user_id", user.getUser_id());
-			json.put("tag_id", user.getTag_id());
-			json.put("email", user.getEmail());
-			json.put("name", user.getUser_name());
-			json.put("device_id", user.getDevice());
-		} catch (JSONException e) {
-
-			e.printStackTrace();
-		}
-		return json.toString();
-
-	}
-
-	@RequestMapping("/bootspring/getAllUser")
-	public List<User> getAllUser() {
-		List<User> getAllUser = u.getAllUsers();
-		return getAllUser;
-	}
-*/
 }

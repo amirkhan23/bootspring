@@ -6,45 +6,49 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "User")
 public class User {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="User_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "User_id")
 	private Integer user_id;
-	
-	@Column(name="User_name",nullable=false)
+
+	@Column(name = "User_name", nullable = false)
 	private String user_name;
-	
+
 	@Email
 	@NotNull
 	private String email;
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="device_id")
-	private Set<Device> device = new HashSet<>();
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "TAG_ID")
 	private Tag tag_id;
-	
-	public int getUser_id() {
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	private Set<DeviceUserMap> device = new HashSet<>(0);
+
+	public Integer getUser_id() {
 		return user_id;
 	}
 
-	public void setUser_id(int user_id) {
+	public void setUser_id(Integer user_id) {
 		this.user_id = user_id;
 	}
 
@@ -64,14 +68,6 @@ public class User {
 		this.email = email;
 	}
 
-	public Set<Device> getDevice() {
-		return device;
-	}
-
-	public void setDevice(Set<Device> device) {
-		this.device = device;
-	}
-
 	public Tag getTag_id() {
 		return tag_id;
 	}
@@ -80,6 +76,12 @@ public class User {
 		this.tag_id = tag_id;
 	}
 
-	
+	public Set<DeviceUserMap> getDevice() {
+		return device;
+	}
+
+	public void setDevice(Set<DeviceUserMap> device) {
+		this.device = device;
+	}
 
 }

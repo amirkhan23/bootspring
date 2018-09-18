@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -37,18 +38,19 @@ public class Tag implements Serializable {
 		Y, N
 	};
 
-	@Column(name = "Is_active", nullable = false)
+	@Column(name = "Is_active")
 	@Enumerated(EnumType.STRING)
 	private Is_active is_active;
 
-	@Column(name = "created_On", nullable = false)
+	@Column(name = "created_On")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy hh:mm:ss")
 	private Date created_On;
 
-	public int getTag_id() {
+	public Integer getTag_id() {
 		return tag_id;
 	}
 
-	public void setTag_id(int tag_id) {
+	public void setTag_id(Integer tag_id) {
 		this.tag_id = tag_id;
 	}
 
